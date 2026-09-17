@@ -1,0 +1,25 @@
+name: Docker CI/CD Build and Push Automation Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build_and_push_docker_job:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Step 1 - Checkout Repository Source Code
+      uses: actions/checkout@v4
+
+    - name: Step 2 - Authenticate and Log in to Azure Container Registry
+      uses: azure/docker-login@v1
+      with:
+        login-server: reg123.azurecr.io
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+
+    - name: Step 3 - Build Docker Image and Push to ACR
+      run: |
+        docker build -t reg123.azurecr.io/my-custom-app:v1 .
+        docker push reg123.azurecr.io/my-custom-app:v1
