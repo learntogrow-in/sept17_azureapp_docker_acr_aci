@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: web-app
-        image: reg123.azurecr.io/web-app:v1
+        image: reg123.azurecr.io/my-custom-app:v1
         ports:
         - containerPort: 80
 ---
