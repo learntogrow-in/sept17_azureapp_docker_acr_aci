@@ -1,0 +1,28 @@
+name: AKS Deployment Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy_to_aks:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Step 1 - Checkout Repository Code
+      uses: actions/checkout@v4
+
+    - name: Step 2 - Log in to Azure
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Step 3 - Set AKS Cluster Context
+      uses: azure/aks-set-context@v3
+      with:
+        resource-group: 'rg_rk_sept16'
+        cluster-name: 'myAKSCluster'
+
+    - name: Step 4 - Deploy Manifests to AKS
+      run: |
+        kubectl apply -f deployment.yaml
